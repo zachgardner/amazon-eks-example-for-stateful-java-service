@@ -1,9 +1,6 @@
-# Java Service on EKS Example
+# Python Microservices EKS Example with Amazon ElastiCache
 
-This repository aims to show how a stateful Java Service can be deployed on EKS. To still being able to scale the service Amazon ElastiCache is used to persist the state at a central place.
-
-Remarks: 
-The Java code bases from this Java Blog https://www.javainuse.com/spring/springboot_session_redis. The code in this repo has added functionalities and customizations to make it run in a container environment working with Amazon ElastiCache Redis. Thanks for the contribution of the before mentioned blogger.
+This repository aims to show how a stateful Python microservices can be deployed, and communicate on EKS. These example show Redis being used to model microservices architectures.
 
 **Be aware that the deployment is not covered by the AWS free tier. Please use the [AWS pricing calculator](https://calculator.aws/#/estimate) to an estimation beforehand**
 
@@ -14,7 +11,7 @@ The Java code bases from this Java Blog https://www.javainuse.com/spring/springb
 3. [Service Overview](#Service-Overview)
 4. [Deploying the infrastructure](#Deploying-the-infrastructure)
 5. [Initializing your local environment](#Initializing-your-local-environment)
-6. [Deploying the Java service](#Deploying-the-Java-service)
+6. [Deploying the Python service](#Deploying-the-Python-service)
 7. [Destroying the environment](#Destroying-the-environment)
 8. [Further Reading](#Further-Reading)
 9. [Security](#Security)
@@ -90,35 +87,35 @@ A sample invocation looks like this: `./init.sh -u bastianklein -r java-ms -t 1.
 
 This information is used to concatenate the full docker repository string. In the above example this would resolve to: `bastianklein/java-ms:1.2`
 
-## Deploying the Java service
+## Deploying the Python service
 
 As everything is set up, it is time to deploy the Java service. Below list of commands first deploys all Kubernetes resources and then lists pods and services.
 
 ```
-kubectl apply -f k8s-resources/
+kubectl apply -f k8s-resources/buildcontainers.sh
 ```
 
 This will output something similar to:
 
 ```
-configmap/java-ms created
+configmap/python-ms created
 deployment.apps/java-ms created
-service/java-ms created
+service/python-ms created
 ```
 
 Now lets list the freshly created pods by issuing `kubectl get pods`.
 
 ```
 NAME                       READY   STATUS              RESTARTS   AGE
-java-ms-69664cc654-7xzkh   0/1     ContainerCreating   0          1s
-java-ms-69664cc654-b9lxb   0/1     ContainerCreating   0          1s
+python-ms-69664cc654-7xzkh   0/1     ContainerCreating   0          1s
+python-ms-69664cc654-b9lxb   0/1     ContainerCreating   0          1s
 ```
 
 Lets also have a look into the created service `kubectl get svc`.
 
 ```
 NAME         TYPE           CLUSTER-IP      EXTERNAL-IP                                                                 PORT(S)        AGE    SELECTOR
-java-ms      LoadBalancer   172.20.83.176   ***-***.eu-central-1.elb.amazonaws.com                                      80:32300/TCP   33s    app=java-ms
+python-ms      LoadBalancer   172.20.83.176   ***-***.eu-central-1.elb.amazonaws.com                                      80:32300/TCP   33s    app=java-ms
 kubernetes   ClusterIP      172.20.0.1      <none>                                                                      443/TCP        2d1h   <none>
 ```
 
