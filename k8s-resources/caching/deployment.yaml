@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caching
+  labels:
+    app: caching
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: caching
+  template:
+    metadata:
+      labels:
+        app: caching
+    spec:
+      containers:
+        - name: caching
+          image: 588515432336.dkr.ecr.us-east-1.amazonaws.com/caching
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 500m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+          env:
+            - name: FLASK_REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: python-ms-configmap
+                  key: host
+            - name: FLASK_REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: python-ms-configmap
+                  key: port
+          ports:
+            - containerPort: 5000
+              name: http
+              protocol: TCP

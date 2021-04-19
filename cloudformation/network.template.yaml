@@ -50,7 +50,7 @@ Resources:
           - '0'
           - Ref: PublicSubnets
       Tags:
-        - Key: kubernetes.io/cluster/java-app-demo-cluster
+        - Key: kubernetes.io/cluster/python-app-demo-cluster
           Value: shared
 
   PublicSubnet2:
@@ -64,7 +64,7 @@ Resources:
           - '1'
           - Ref: PublicSubnets
       Tags:
-        - Key: kubernetes.io/cluster/java-app-demo-cluster
+        - Key: kubernetes.io/cluster/python-app-demo-cluster
           Value: shared
 
   PublicSubnet3:
@@ -78,7 +78,7 @@ Resources:
           - '2'
           - Ref: PublicSubnets
       Tags:
-        - Key: kubernetes.io/cluster/java-app-demo-cluster
+        - Key: kubernetes.io/cluster/python-app-demo-cluster
           Value: shared
 
   PrivateSubnet1:

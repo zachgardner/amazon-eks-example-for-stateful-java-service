@@ -5,7 +5,7 @@ Description: >
 
   Disclaimer: Not for Production Use. Demo and Testing purposes only.
 
-  Authors: Bastian Klein <basklein@amazon.com>
+  Authors: Bastian Klein <basklein@amazon.com>, Modified By Zach Gardner <gardz@amazon.com>
 
 Parameters:
   TemplatePath:
@@ -35,13 +35,6 @@ Parameters:
     Description: Instance type used for the Redis instance
     Type: String
     Default: cache.t3.micro
-  CacheAZMode:
-    Description: Redis Cache AZ Mode
-    Type: String
-    Default: single-az
-    AllowedValues:
-      - single-az
-      - cross-az
   EKSNodeGroupMinSize:
     Description: Minimum Size of the EKS Node Group
     Type: Number
@@ -110,7 +103,6 @@ Resources:
           Fn::GetAtt:
             - NetworkStack
             - Outputs.VPC
-        CacheAZMode: !Ref CacheAZMode
         PrivateDBSubnets:
           Fn::GetAtt:
             - NetworkStack

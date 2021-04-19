@@ -8,30 +8,15 @@
 # Disclaimer: NOT FOR PRODUCTION USE - Only for demo and testing purposes
 
 PREPSTACK="DevSourceBucket"
-STACK="EKSJavaApplication"
+STACK="PythonMicroserviceApplication"
 ERROR_COUNT=0;
 
-if [[ $# -lt 1 ]] ; then
-    echo 'argument missing, please provide aws dev profile string (-p)'
-    exit 1
-fi
 
-while getopts ":p:b:" opt; do
-  case $opt in
-    p) PROFILE="$OPTARG"
-    ;;
-    \?) echo "Invalid option -$OPTARG" >&2
-    ;;
-  esac
-done
 
 if ! [ -x "$(command -v aws)" ]; then
   echo 'Error: aws cli is not installed.' >&2
   exit 1
 fi
-
-echo "using AWS Profile $PROFILE"
-echo "##################################################"
 
 echo "Validating AWS CloudFormation templates..."
 echo "##################################################"
@@ -39,7 +24,7 @@ echo "##################################################"
 for TEMPLATE in $(find ./cloudformation -name '*.yaml'); do
 
     # Validate the template with CloudFormation
-    ERRORS=$(aws cloudformation validate-template --profile=$PROFILE --template-body file://$TEMPLATE 2>&1 >/dev/null);
+    ERRORS=$(aws cloudformation validate-template --template-body file://$TEMPLATE 2>&1 >/dev/null);
     if [ "$?" -gt "0" ]; then
         ((ERROR_COUNT++));
         echo "[fail] $TEMPLATE: $ERRORS";
@@ -62,12 +47,12 @@ echo "##################################################"
 # Deploy the Needed Buckets for the later build
 echo "deploy the Prerequisites if needed"
 echo "##################################################"
-aws cloudformation deploy  --stack-name $PREPSTACK --profile=$PROFILE --template ./cloudformation/buildbucket.template.yaml
+aws cloudformation deploy  --stack-name $PREPSTACK --template ./cloudformation/buildbucket.template.yaml
 echo "##################################################"
 echo "deployment done"
 
 # get the s3 bucket name out of the deployment.
-SOURCE=`aws cloudformation describe-stacks --profile=$PROFILE --query "Stacks[0].Outputs[0].OutputValue" --stack-name $PREPSTACK`
+SOURCE=`aws cloudformation describe-stacks --query "Stacks[0].Outputs[0].OutputValue" --stack-name $PREPSTACK`
 SOURCE=`echo "${SOURCE//\"}"`
 
 # we will upload the needed CFN Templates to S3 containing the IaaC Code which deploys the actual infrastructure.
@@ -79,7 +64,7 @@ if [ -e ./ ]
 then
     echo "##################################################"
     echo "copy code source file"
-    aws s3 sync --profile=$PROFILE ./cloudformation s3://$SOURCE
+    aws s3 sync ./cloudformation s3://$SOURCE
 
     echo "##################################################"
 else
@@ -93,7 +78,7 @@ echo "File Copy finished"
 # Deploy of the CICD Codepipeline Based IaaC Deployment infrastructure.
 echo "Building the DEV Environment"
 echo "##################################################"
-aws cloudformation deploy --profile=$PROFILE --stack-name $STACK --capabilities CAPABILITY_NAMED_IAM --parameter-overrides "TemplatePath=$SOURCE" --template ./cloudformation/main.template.yaml
+aws cloudformation deploy --stack-name $STACK --capabilities CAPABILITY_NAMED_IAM --parameter-overrides "TemplatePath=$SOURCE" --template ./cloudformation/main.template.yaml
 echo "##################################################"
 echo "Deployment finished"
 

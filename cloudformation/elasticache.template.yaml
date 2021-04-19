@@ -1,4 +1,3 @@
----
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >
 
@@ -6,7 +5,7 @@ Description: >
 
   Disclaimer: Not for production use. Demo and testing purposes only.
 
-  Author: Bastian Klein <basklein@amazon.com>
+  Author: Bastian Klein <basklein@amazon.com>, Modified by Zach Gardner <gardz@amazon.com>
 
 Parameters:
   VPC:
@@ -19,88 +18,51 @@ Parameters:
       - cache.t3.micro
       - cache.t3.small
       - cache.t3.medium
-      - cache.m5.large
-      - cache.m5.xlarge
-      - cache.m5.2xlarge
-      - cache.m5.4xlarge
-      - cache.m5.12xlarge
-      - cache.m5.24xlarge
-      - cache.r5.large
-      - cache.r5.xlarge
-      - cache.r5.2xlarge
-      - cache.r5.4xlarge
-      - cache.r5.12xlarge
-      - cache.r5.24xlarge
   PrivateDBSubnets:
     Description: Comma separated list of the private database subnets
     Type: CommaDelimitedList
-  CacheAZMode:
-    Description: Redis Cache AZ Mode
-    Type: String
-    Default: single-az
-    AllowedValues:
-      - single-az
-      - cross-az
   ElasticacheSecurityGroup:
     Description: Security Group used for the ElastiCache instances
     Type: String
-
 Resources:
-
   CacheSubnetGroup:
     Type: AWS::ElastiCache::SubnetGroup
     Properties:
       Description: CacheSubnetGroup
       SubnetIds: !Ref PrivateDBSubnets
-
-  ParametersGroup:
-    Type: AWS::ElastiCache::ParameterGroup
+  ElastiCacheSubnetGroup:
+    Type: AWS::ElastiCache::SubnetGroup
     Properties:
-      CacheParameterGroupFamily: "redis5.0"
-      Description: "Modifications to support better performance"
-      Properties:
-        tcp-keepalive: 60
-        timeout: 900
-
-  ElasticacheRedis:
-    Type: AWS::ElastiCache::CacheCluster
+      Description: CacheSubnetGroup
+      SubnetIds: !Ref PrivateDBSubnets
+  ElastiCacheRedisCluster:
+    Type: AWS::ElastiCache::ReplicationGroup
+    DependsOn: ElastiCacheSubnetGroup
     Properties:
-      NumCacheNodes: 1
-      CacheNodeType:
-        Ref: RedisInstanceType
-      CacheParameterGroupName:
-        Ref: ParametersGroup
-      CacheSubnetGroupName: !Ref CacheSubnetGroup
-      AZMode: !Ref CacheAZMode
-      Engine: "redis"
-      EngineVersion: "5.0.5"
-      VpcSecurityGroupIds:
-        - Ref: ElasticacheSecurityGroup
-
+      AutoMinorVersionUpgrade: true
+      CacheParameterGroupName: "default.redis6.x.cluster.on"
+      CacheNodeType: cache.t3.micro
+      CacheSubnetGroupName:  !Ref ElastiCacheSubnetGroup
+      Engine: redis
+      EngineVersion: "6.x"
+      NumNodeGroups: 3
+      Port: 6379
+      ReplicasPerNodeGroup: 1
+      ReplicationGroupDescription: ElastiCache Microservices Demo
+      SecurityGroupIds:
+        - !Ref ElasticacheSecurityGroup
 Outputs:
   DBAddress:
     Description: Database Address
-    Value:
-      Fn::GetAtt:
-        - ElasticacheRedis
-        - RedisEndpoint.Address
+    Value: !GetAtt  ElastiCacheRedisCluster.ConfigurationEndPoint.Address
     Export:
       Name: !Join [ ":", [ !Ref "AWS::StackName", DBAddress ] ]
   DBPort:
     Description: Database Port
-    Value:
-      Fn::GetAtt:
-        - ElasticacheRedis
-        - RedisEndpoint.Port
+    Value: "6379"
   ElasticacheRedis:
     Description: Redis Cluster
-    Value:
-      Ref: ElasticacheRedis
-  ParametersGroup:
-    Description: TRedis Parameter Group
-    Value:
-      Ref: ParametersGroup
+    Value: !Ref ElastiCacheRedisCluster
   CacheSubnetGroup:
     Description: Redis Subnet Group
-    Value:
-      Ref: CacheSubnetGroup
+    Value: !Ref CacheSubnetGroup

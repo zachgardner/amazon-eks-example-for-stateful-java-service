@@ -37,7 +37,7 @@ echo "##################################################"
 
 # get the s3 bucket name out of the deployment.
 PREPSTACK="DevSourceBucket"
-STACK="EKSJavaApplication"
+STACK="PythonMicroserviceApplication"
 SOURCE=`aws cloudformation describe-stacks --profile=$PROFILE --query "Stacks[0].Outputs[0].OutputValue" --stack-name $PREPSTACK`
 
 SOURCE=`echo "${SOURCE//\"}"`

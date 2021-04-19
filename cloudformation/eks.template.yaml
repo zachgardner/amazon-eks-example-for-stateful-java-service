@@ -6,7 +6,7 @@ Description: >
 
   Disclaimer: Not for production use. Demo and testing purposes only.
 
-  Author: Bastian Klein <basklein@amazon.com>
+  Author: Bastian Klein <basklein@amazon.com>, Modified By Zach Gardner <gardz@amazon.com>
 
 Parameters:
   VPC:
@@ -87,7 +87,7 @@ Resources:
   EKSCluster:
     Type: AWS::EKS::Cluster
     Properties:
-      Name: java-app-demo-cluster
+      Name: python-app-demo-cluster
       ResourcesVpcConfig:
         SecurityGroupIds:
           - !Ref EKSControlPlaneSecurityGroup
