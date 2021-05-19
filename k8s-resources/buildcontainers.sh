@@ -43,6 +43,7 @@ ELASTICACHE_DB_ADDRESS=$(aws cloudformation list-exports | jq -r '.Exports[] | s
 
 [[ -z "$EKS_CLUSTER_NAME" ]] && echo "Could not get EKS Cluster Name" && exit 1
 [[ -z "$ELASTICACHE_DB_ADDRESS" ]] && echo "Could not get ElastiCache Address" && exit 1
+sed -i '' -e "s/  host\: \".*\"/  host\: \"${ELASTICACHE_DB_ADDRESS}\"/g" ./config-map.yaml
 
 # Update local kube config to use the newly created cluster
 aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
@@ -62,7 +63,7 @@ for d in */ ; do
     docker login --username AWS --password $(aws ecr get-login-password --region $region ) $account.dkr.ecr.$region.amazonaws.com
     app=${d%?};
     export SERVICE=$app
-    #aws ecr create-repository --repository-name $app --region $region
+    aws ecr create-repository --repository-name $app --region $region
     export CONTAINER="$account.dkr.ecr.$region.amazonaws.com/$app"
     echo $CONTAINER
     docker build "./$app/." -t $CONTAINER

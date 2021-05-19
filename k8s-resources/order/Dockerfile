@@ -1,6 +1,7 @@
 FROM python:3
 
-ENV SERVICE_NAME=leaderboard
+ENV SERVICE_NAME=order
+
 RUN mkdir -p /app
 WORKDIR /app
 COPY requirements.txt requirements.txt

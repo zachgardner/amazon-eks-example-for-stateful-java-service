@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: leaderboard
+  name: order
   labels:
-    app: leaderboard
+    app: order
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: leaderboard
+      app: order
   template:
     metadata:
       labels:
-        app: leaderboard
+        app: order
     spec:
       containers:
-        - name: leaderboard
-          image: 588515432336.dkr.ecr.us-east-1.amazonaws.com/leaderboard
+        - name: order
+          image: 588515432336.dkr.ecr.us-east-1.amazonaws.com/order
           imagePullPolicy: Always
           resources:
             requests:
-              cpu: 500m
-              memory: 256Mi
+              cpu: 200m
+              memory: 128Mi
             limits:
               cpu: 1000m
               memory: 512Mi

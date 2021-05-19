@@ -50,5 +50,8 @@ ELASTICACHE_DB_ADDRESS=$(aws cloudformation list-exports | jq -r '.Exports[] | s
 [[ -z "$EKS_CLUSTER_NAME" ]] && echo "Could not get EKS Cluster Name" && exit 1
 [[ -z "$ELASTICACHE_DB_ADDRESS" ]] && echo "Could not get ElastiCache Address" && exit 1
 
+# Update the redsi-web-config-map for the Python Microservice
+sed -i '' -e "s/  host\: \".*\"/  host\: \"${ELASTICACHE_DB_ADDRESS}\"/g" ./k8s-resources/config-map.yaml
+
 # Update local kube config to use the newly created cluster
 aws eks update-kubeconfig --name $EKS_CLUSTER_NAME

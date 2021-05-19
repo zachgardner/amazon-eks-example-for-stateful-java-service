@@ -1,0 +1,29 @@
+from flask import Flask, request
+import os
+import rediscluster
+import requests
+import json
+import asyncio
+import threading 
+
+
+
+app = Flask(__name__)
+
+mySortedSet = "myGame"
+  
+@app.route('/postScore/<user>/<score>')
+def postScore(user, score):
+    event = "played:" + mySortedSet
+    sendEvent(event, user)
+    return "posted score for " + user
+
+    
+if __name__ == "__main__":
+    app.run(host ='0.0.0.0', port = 5000, debug = True) 
+    
+
+async def sendEvent(event,user):
+    print("async_foo started")
+    await request("GET", 'http://events/postEvent?event=' + event + "&user=" + user)
+    print("async_foo done")

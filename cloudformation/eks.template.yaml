@@ -33,7 +33,7 @@ Parameters:
   EKSNodeGroupDesiredSize:
     Description: Desired Size of the EKS Node Group
     Type: Number
-    Default: 3
+    Default: 5
 
 Mappings:
   ServicePrincipals:
@@ -81,6 +81,7 @@ Resources:
         - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonEKSWorkerNodePolicy"
         - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonEKS_CNI_Policy"
         - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
       Path: /
 

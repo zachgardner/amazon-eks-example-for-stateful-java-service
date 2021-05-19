@@ -13,22 +13,25 @@ r = rediscluster.RedisCluster(connection_pool=connect())
 app = Flask(__name__)
 
 
-@app.route('/postEvent')
+@app.route('/postDelivery')
 def postEvent():
     user = request.args.get('user')
-    event = request.args.get('event')
-    r.set(user, event);
-    return r.get(user)
+    event = "Delivery"
+    r.xadd(event, {"user" : user})
+    r.xadd(user, {"event": event})
+    return event + " for  user " + user + " submitted"
   
-@app.route('/getEventsByUser')
-def getEventsByUser():
+@app.route('/getDeliveryByUser')
+def getDeliveryByUser():
     user = request.args.get('user')
-    return user
+    read_samples = r.xread({user:b"0-0"})
+    return str(read_samples)
 
-@app.route('/getRecentEvents')
-def getRecentEvents():
-    event = request.args.get('event')
-    return event
+@app.route('/newDeliveries')
+def getNewDeliveries():
+    r.xread("orders:created")
+    read_samples = r.xread({user:b"0-0"})
+    return str(read_samples)
 
 if __name__ == "__main__":
-    app.run(host ='0.0.0.0', port = 8080, debug = True) 
+    app.run(host ='0.0.0.0', port = 5000, debug = True) 

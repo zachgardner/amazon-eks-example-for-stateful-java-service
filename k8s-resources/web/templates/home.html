@@ -1,0 +1,102 @@
+ <!DOCTYPE html>
+<html lang="en" dir="ltr">
+ <head>
+   <meta charset="utf-8">
+   <title>Microservices Application Demo</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+ </head>
+  <body>
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Food Delivery App</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Home
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{{ url_for('home') }}">Home</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+  <div class="b-example-divider"></div>
+
+  <div id="new-user" class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-5">
+      <div class="col-lg-7 text-center text-lg-start">
+        <h1 class="display-4 fw-bold lh-1 mb-3">Welcome</h1>
+        <p class="col-lg-10 fs-4">Login to start your session...</p>
+      </div>
+      </div>
+          <div class="row align-items-center g-lg-5 py-5">
+      <div class="col-md-10 mx-auto col-lg-5">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="username" placeholder="name@example.com">
+            <label for="floatingInput">User Name</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="customer-type" placeholder="Customer">
+            <label for="customer-type">Customer Type</label>
+          </div>
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" id="login" onclick="startSession()">Login</button>
+          <hr class="my-4">
+          <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+      </div>
+    </div>
+  </div>
+  <div class="b-example-divider"></div>
+
+  <div id="return-user" class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-5">
+      <div class="col-lg-7 text-center text-lg-start">
+        <h1 class="display-4 fw-bold lh-1 mb-3">Welcome</h1>
+        <p class="col-lg-10 fs-4">Login to start your session...</p>
+      </div>
+      </div>
+          <div class="row align-items-center g-lg-5 py-5">
+      <div class="col-md-10 mx-auto col-lg-5">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="username" placeholder="name@example.com">
+            <label for="floatingInput">User Name</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="customer-type" placeholder="Customer">
+            <label for="customer-type">Customer Type</label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" id="login" onclick="startSession()">Continue</button>
+          <hr class="my-4">
+          <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+      </div>
+    </div>
+  </div>
+
+</main>
+    {% block content %}
+    {% endblock %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+       <script src="{{ url_for('static',filename='web.js') }}"></script>
+       <script>
+      $( document ).ready(function() {
+          console.log( "ready!" );
+          reloadSession();
+      });
+</script>
+ </body>
+</html>

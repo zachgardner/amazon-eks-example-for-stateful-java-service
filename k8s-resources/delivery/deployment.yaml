@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: events
+  name: delivery
   labels:
-    app: events
+    app: delivery
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: events
+      app: delivery
   template:
     metadata:
       labels:
-        app: events
+        app: delivery
     spec:
       containers:
-        - name: events
-          image: 588515432336.dkr.ecr.us-east-1.amazonaws.com/events
+        - name: delivery
+          image: 588515432336.dkr.ecr.us-east-1.amazonaws.com/delivery
           imagePullPolicy: Always
           resources:
             requests:
-              cpu: 500m
-              memory: 256Mi
+              cpu: 200m
+              memory: 128Mi
             limits:
               cpu: 1000m
               memory: 512Mi

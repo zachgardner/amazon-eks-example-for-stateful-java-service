@@ -1,6 +1,8 @@
+ARG SERVICE_NAME
+
 FROM python:3
 
-ENV SERVICE_NAME=leaderboard
+ENV SERVICE_NAME=profile
 
 RUN mkdir -p /app
 WORKDIR /app
@@ -10,6 +12,7 @@ COPY $SERVICE_NAME.py $SERVICE_NAME.py
 ENV FLASK_ENV development
 ENV FLASK_APP /app/$SERVICE_NAME.py
 ENV PYTHONPATH /app
+
 EXPOSE 5000
 
 CMD [ "flask", "run", "--host=0.0.0.0" ]

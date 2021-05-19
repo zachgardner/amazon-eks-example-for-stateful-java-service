@@ -114,6 +114,11 @@ Resources:
       Tags:
         - Key: Name
           Value: DatabaseStack
+  DynamoDBStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL:
+        Fn::Sub: "https://s3.amazonaws.com/${TemplatePath}/dynamodb.template.yaml"
 
   EKSStack:
     Type: AWS::CloudFormation::Stack

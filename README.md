@@ -1,6 +1,9 @@
-# Python Microservices EKS Example with Amazon ElastiCache
+# Python Service on EKS Example
 
-This repository aims to show how a stateful Python microservices can be deployed, and communicate on EKS. These example show Redis being used to model microservices architectures.
+This repository aims to show how a stateful Python Service can be deployed on EKS. To still being able to scale the service Amazon ElastiCache is used to persist the state at a central place.
+
+Remarks: 
+The Python code bases from this Python Blog https://www.Pythoninuse.com/spring/springboot_session_redis. The code in this repo has added functionalities and customizations to make it run in a container environment working with Amazon ElastiCache Redis. Thanks for the contribution of the before mentioned blogger.
 
 **Be aware that the deployment is not covered by the AWS free tier. Please use the [AWS pricing calculator](https://calculator.aws/#/estimate) to an estimation beforehand**
 
@@ -30,13 +33,13 @@ Before starting to deploy, following dependencies need to be installed in your e
 
 ## Architecture
 
-![Architecture Diagram](img/EKS_java_blog_post.svg)
+![Architecture Diagram](img/EKS_Python_blog_post.svg)
 
 ### Service Overview
 
 Amazon Elastic Kubernetes Service (Amazon EKS) manages the Kubernetes Control Plane. In this example we are using an Amazon EKS Managed Node Group to add worker nodes to our cluster. All applications containers will run on these nodes. To keep the example as simple as possible, we are using the Kubernetes service type `LoadBalancer` to route traffic to the application. When using Amazon EKS clusters this automatically creates a Classic Load Balancer that uses Node Ports to route traffic to the application. Please have a look into the [Application load balancing on Amazon EKS edocumentation](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html) if you want to use an Application or Network Load Balancer to control ingress. 
 
-To store and share session data across all Java services we are using Amazon ElastiCache Redis. 
+To store and share session data across all Python services we are using Amazon ElastiCache Redis. 
 
 ## Deploying the infrastructure
 
@@ -73,7 +76,7 @@ After the deployment finished, there are some additional steps required to initi
 
 1. Update the local kubeconfig to configure the kubectl with the created cluster
 2. Update the k8s-resources/config-map.yaml to the created Redis Database Address
-3. Build and package the Java Service
+3. Build and package the Python Service
 4. Build and push the Docker image
 5. Update the k8s-resources/deployment.yaml to use the newly created image
 
@@ -83,43 +86,43 @@ These steps can be automatically executed using the init.sh. The script needs fo
 2. `-r` - Repository Name
 3. `-t` - Docker image version tag
 
-A sample invocation looks like this: `./init.sh -u bastianklein -r java-ms -t 1.2`.
+A sample invocation looks like this: `./init.sh -u bastianklein -r Python-ms -t 1.2`.
 
-This information is used to concatenate the full docker repository string. In the above example this would resolve to: `bastianklein/java-ms:1.2`
+This information is used to concatenate the full docker repository string. In the above example this would resolve to: `bastianklein/Python-ms:1.2`
 
 ## Deploying the Python service
 
-As everything is set up, it is time to deploy the Java service. Below list of commands first deploys all Kubernetes resources and then lists pods and services.
+As everything is set up, it is time to deploy the Python service. Below list of commands first deploys all Kubernetes resources and then lists pods and services.
 
 ```
-kubectl apply -f k8s-resources/buildcontainers.sh
+kubectl apply -f k8s-resources/
 ```
 
 This will output something similar to:
 
 ```
-configmap/python-ms created
-deployment.apps/java-ms created
-service/python-ms created
+configmap/Python-ms created
+deployment.apps/Python-ms created
+service/Python-ms created
 ```
 
 Now lets list the freshly created pods by issuing `kubectl get pods`.
 
 ```
 NAME                       READY   STATUS              RESTARTS   AGE
-python-ms-69664cc654-7xzkh   0/1     ContainerCreating   0          1s
-python-ms-69664cc654-b9lxb   0/1     ContainerCreating   0          1s
+Python-ms-69664cc654-7xzkh   0/1     ContainerCreating   0          1s
+Python-ms-69664cc654-b9lxb   0/1     ContainerCreating   0          1s
 ```
 
 Lets also have a look into the created service `kubectl get svc`.
 
 ```
 NAME         TYPE           CLUSTER-IP      EXTERNAL-IP                                                                 PORT(S)        AGE    SELECTOR
-python-ms      LoadBalancer   172.20.83.176   ***-***.eu-central-1.elb.amazonaws.com                                      80:32300/TCP   33s    app=java-ms
+Python-ms      LoadBalancer   172.20.83.176   ***-***.eu-central-1.elb.amazonaws.com                                      80:32300/TCP   33s    app=Python-ms
 kubernetes   ClusterIP      172.20.0.1      <none>                                                                      443/TCP        2d1h   <none>
 ```
 
-What we can see here is that the Service with name `java-ms` has an External-IP assigned to it. This is the DNS Name of the Classic Loadbalancer that is created behind the scenes. If you open that URL, you should see the Website (This might take a few minutes for the ELB to be provisioned).
+What we can see here is that the Service with name `Python-ms` has an External-IP assigned to it. This is the DNS Name of the Classic Loadbalancer that is created behind the scenes. If you open that URL, you should see the Website (This might take a few minutes for the ELB to be provisioned).
 
 ## Destroying the environment
 
@@ -143,5 +146,5 @@ Please be aware of the deviating licenses of the deployed open-source software c
 
 * Spring Boot: [Apache License 2.0](https://github.com/spring-projects/spring-boot/blob/master/LICENSE.txt)
 * Spring Boot Starter Parent: [Apache License 2.0](https://github.com/bitmc/spring-boot-starter-parent/blob/main/LICENSE.txt)
-* Lettuce - Advanced Java Redis client: [Apache License 2.0](https://github.com/lettuce-io/lettuce-core/blob/main/LICENSE)
+* Lettuce - Advanced Python Redis client: [Apache License 2.0](https://github.com/lettuce-io/lettuce-core/blob/main/LICENSE)
 * MojoHaus Exec Maven Plugin: [Apache License 2.0](https://github.com/mojohaus/exec-maven-plugin/blob/master/LICENSE.txt)

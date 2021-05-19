@@ -1,0 +1,16 @@
+Resources:
+  DDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: profiles
+      AttributeDefinitions:
+        -
+          AttributeName: "ProfileID"
+          AttributeType: "S"
+      KeySchema:
+        -
+          AttributeName: "ProfileID"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5

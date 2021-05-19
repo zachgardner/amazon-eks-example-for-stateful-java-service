@@ -2,7 +2,7 @@ ARG SERVICE_NAME
 
 FROM python:3
 
-ENV SERVICE_NAME=events
+ENV SERVICE_NAME=delivery
 
 RUN mkdir -p /app
 WORKDIR /app

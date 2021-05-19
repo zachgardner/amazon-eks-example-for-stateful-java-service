@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: caching
+  name: profile
   labels:
-    app: caching
+    app: profile
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
-      app: caching
+      app: profile
   template:
     metadata:
       labels:
-        app: caching
+        app: profile
     spec:
       containers:
-        - name: caching
-          image: 588515432336.dkr.ecr.us-east-1.amazonaws.com/caching
+        - name: profile
+          image: 588515432336.dkr.ecr.us-east-1.amazonaws.com/profile
           imagePullPolicy: Always
           resources:
             requests:
-              cpu: 500m
-              memory: 256Mi
+              cpu: 200m
+              memory: 128Mi
             limits:
               cpu: 1000m
               memory: 512Mi
@@ -36,6 +36,11 @@ spec:
                 configMapKeyRef:
                   name: python-ms-configmap
                   key: port
+            - name: DDB_TABLE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: python-ms-configmap
+                  key: ddb_table
           ports:
             - containerPort: 5000
               name: http
