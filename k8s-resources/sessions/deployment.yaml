@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: sessions
-          image: 588515432336.dkr.ecr.us-east-1.amazonaws.com/sessions
+          image: <ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/sessions
           imagePullPolicy: Always
           resources:
             requests:
