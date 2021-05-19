@@ -1,4 +1,4 @@
-export account="588515432336"
+export account=""
 export region="us-east-1"
 
 #!/bin/bash
