@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: delivery
-          image: <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/delivery
+          image: <ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/delivery
           imagePullPolicy: Always
           resources:
             requests:
