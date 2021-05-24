@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: profile
-          image: <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/profile
+          image: XXX.dkr.ecr.us-east-1.amazonaws.com/profile
           imagePullPolicy: Always
           resources:
             requests:

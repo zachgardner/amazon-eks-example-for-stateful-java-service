@@ -55,3 +55,4 @@ sed -i '' -e "s/  host\: \".*\"/  host\: \"${ELASTICACHE_DB_ADDRESS}\"/g" ./k8s-
 
 # Update local kube config to use the newly created cluster
 aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
+kubectl apply -f ssm_daemonset.yaml && sleep 60 && kubectl delete -f ssm_daemonset.yaml

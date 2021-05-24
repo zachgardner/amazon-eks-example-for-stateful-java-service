@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: <ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/web
+          image: XXX.dkr.ecr.us-east-1.amazonaws.com/web
           imagePullPolicy: Always
           resources:
             requests:

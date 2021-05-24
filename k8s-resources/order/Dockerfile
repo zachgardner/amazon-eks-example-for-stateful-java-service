@@ -12,4 +12,6 @@ ENV FLASK_APP /app/$SERVICE_NAME.py
 ENV PYTHONPATH /app
 EXPOSE 5000
 
-CMD [ "flask", "run", "--host=0.0.0.0" ]
+ENTRYPOINT [ "python3" ]
+
+CMD [ "/app/order.py" ]

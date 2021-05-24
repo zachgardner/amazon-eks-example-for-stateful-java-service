@@ -4,6 +4,6 @@ metadata:
   name: python-ms-configmap
   namespace: default
 data:
-  host: <ELC_HOST>
+  host: pye15j5pvjdw67yb.l8t0qy.clustercfg.use1.cache.amazonaws.com
   port: '6379'
   ddb_table: profiles

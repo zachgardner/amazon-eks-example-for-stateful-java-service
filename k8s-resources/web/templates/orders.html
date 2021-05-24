@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+    {% block content %}
+  <div class="b-example-divider"></div>
+
+  <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-5">
+      <div class="col-lg-7 text-center text-lg-start">
+        <h1 class="display-4 fw-bold lh-1 mb-3">Orders</h1>
+      </div>
+      </div>
+      
+      <div class="col-md-10 mx-auto col-lg-5">
+<table id="orders" class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">TOTAL</th>
+      <th scope="col">LOCATION</th>
+      <th scope="col">STATUS</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+  </div>
+
+</main>
+
+ 
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+       <script src="{{ url_for('static',filename='web.js') }}"></script> </body>
+       <script>
+             $( document ).ready(function() {
+          console.log( "ready!" );
+          loadOrders(sessionStorage.getItem("username"));
+      });
+      </script>
+   {% endblock %}

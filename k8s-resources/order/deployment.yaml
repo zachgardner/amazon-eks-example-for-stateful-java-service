@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: order
-          image: <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/order
+          image: XXX.dkr.ecr.us-east-1.amazonaws.com/order
           imagePullPolicy: Always
           resources:
             requests:

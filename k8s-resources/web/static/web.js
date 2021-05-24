@@ -15,7 +15,7 @@ $( "#btnProfile" ).click(function( event ) {
 $( "#btnOrder" ).click(function( event ) {
   event.preventDefault();
   var user = sessionStorage.getItem("username");
-  var orderData = { "user": user, "Location": $("#location").val(), "total": $("#total").val() }
+  var orderData = { "user": user, "location": $("#location").val(), "total": $("#total").val() }
   postOrder(user, orderData);
 });
 
@@ -44,7 +44,6 @@ function getSession(user){
 function sessionSuccess(url){
     window.location.href = url;
 }
-
 
 function postProfile(user, profile){
     $.ajax({
@@ -80,8 +79,31 @@ function postOrder(user, order){
       url: "/postOrder/" + user,
       data:  JSON.stringify(order),
       success: function (data) {
-            sessionSuccess("/order/" + data.orderid);
+            var parsedJson = $.parseJSON(data);
+            sessionSuccess("/orders/" +  user );
       },
       contentType: "application/json"
     });
 }
+
+function loadOrders(user){
+        $.ajax({
+        type:"GET",
+        url: "/getOrders/" + user,
+        success: function (data) {
+            console.log(data);
+            var parsedJson = $.parseJSON(data);
+            var tbl = $("#orders > tbody");
+            $.each(parsedJson, function(i, item) {
+                var row = $.parseJSON(item.replace(/\'/g, "\""));
+                $("#orders > tbody").append("<tr>" +
+                "<td>" + "ID" + row.id +  "</td>" +
+                "<td>"  + row.total + "</td>" +
+                "<td>"  + row.location + "</td>" +
+                "<td>" + row.status + "</td>"
+                + "</tr>");
+                });
+        }
+    });
+}
+    

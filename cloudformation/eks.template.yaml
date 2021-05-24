@@ -21,7 +21,7 @@ Parameters:
   EKSWorkerNodeInstanceType:
     Description: Instance type for the worker nodes
     Type: String
-    Default: t3.micro
+    Default: t3.small
   EKSNodeGroupMinSize:
     Description: Minimum Size of the EKS Node Group
     Type: Number
@@ -64,6 +64,7 @@ Resources:
               - sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
 
   EKSNodeInstanceRole:
     Type: "AWS::IAM::Role"

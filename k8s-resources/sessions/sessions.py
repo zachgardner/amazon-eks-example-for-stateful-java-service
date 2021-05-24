@@ -25,6 +25,7 @@ def postSession(user):
     data = request.get_json()
     data['lastlogin'] = time.time()
     r.hmset("session:" + user, data)
+    r.xadd("session:activity", data)
     r.incr("logins:" + user)
     return json.dumps(r.hgetall("session:" + user ))
 
