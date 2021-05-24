@@ -3,7 +3,7 @@
 This repository aims to show how a stateful Python Service can be deployed on EKS. To still being able to scale the service Amazon ElastiCache is used to persist the state at a central place.
 
 Remarks: 
-The Python code bases from this Python Blog https://www.Pythoninuse.com/spring/springboot_session_redis. The code in this repo has added functionalities and customizations to make it run in a container environment working with Amazon ElastiCache Redis. Thanks for the contribution of the before mentioned blogger.
+The code in this repo has added functionalities and customizations to make it run in a container environment working with Amazon ElastiCache for Redis. Thanks for the contribution of the before mentioned blogger.
 
 **Be aware that the deployment is not covered by the AWS free tier. Please use the [AWS pricing calculator](https://calculator.aws/#/estimate) to an estimation beforehand**
 
